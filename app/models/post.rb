@@ -6,17 +6,9 @@ class Post < ActiveRecord::Base
   validate :is_click_baity
 
   def is_click_baity
-    phrases = ["Won't Believe", "Secret", "Top", "Guess"]
-    valid_title = true
-    # binding.pry
+    phrases = [/Won't Believe/i, /Secret/i, /Top/i, /Guess/i]
 
-    if !title.nil? && !title.empty?
-      valid_title = phrases.any? do |phrase|
-        title.include?(phrase)
-      end
-    end
-
-    if !valid_title
+    if !phrases.any? {|phrase| phrase.match(title)}
       errors.add :title, "is not click-baity"
     end
   end
